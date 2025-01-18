@@ -31,7 +31,8 @@ jobs:
       matrix:
         # aarch64-linux is failing due to python3 missing issues during tests. I'm removing it for now.
         # build: [x86_64-linux, aarch64-linux, x86_64-macos, aarch64-macos, x86_64-windows, x86_64-win-gnu]
-        build: [x86_64-linux, x86_64-macos, aarch64-macos, x86_64-windows, x86_64-win-gnu]
+        #build: [x86_64-linux, x86_64-macos, aarch64-macos, x86_64-windows, x86_64-win-gnu]
+        build: [x86_64-windows, x86_64-win-gnu]
         include:
           # - build: aarch64-linux
           #   os: ubuntu-20.04
@@ -133,12 +134,6 @@ jobs:
             cp "target/${{ matrix.target }}/release/$BIN_NAME" "dist/"
           fi
 
-          if [[ "${{ matrix.build }}" =~ "linux" ]]; then
-            cargo install cargo-deb
-            cargo deb --target ${{ matrix.target }} --deb-version ${TAG}
-            cp "target/${{ matrix.target }}/debian/legba_${TAG}_amd64.deb" "dist/" || true
-          fi
-
       - uses: actions/upload-artifact@v4.3.4
         with:
           name: bins-${{ matrix.build }}
@@ -186,10 +181,6 @@ jobs:
               cp $dir/$BIN_NAME$exe dist/ || true
               mv $dir/$BIN_NAME$exe tmp/$pkgname
               chmod +x tmp/$pkgname/$BIN_NAME$exe
-
-              if [[ $platform =~ "linux" ]]; then
-                  mv "$dir/legba_${TAG}_amd64.deb" dist/ || true
-              fi
 
               tar cJf dist/$pkgname.tar.xz -C tmp $pkgname
               7z a dist/$pkgname.zip tmp/$pkgname
