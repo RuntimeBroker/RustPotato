@@ -38,6 +38,21 @@ jobs:
           #   rust: stable
           #   target: aarch64-unknown-linux-gnu
           #   cross: true
+          - build: aarch64-macos
+            os: macos-latest
+            rust: stable
+            target: aarch64-apple-darwin
+            cross: true
+          - build: x86_64-linux
+            os: ubuntu-20.04
+            rust: stable
+            target: x86_64-unknown-linux-gnu
+            cross: false
+          - build: x86_64-macos
+            os: macos-latest
+            rust: stable
+            target: x86_64-apple-darwin
+            cross: false
           - build: x86_64-windows
             os: windows-2019
             rust: nightly
